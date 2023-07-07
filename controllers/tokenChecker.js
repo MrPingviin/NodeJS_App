@@ -11,14 +11,12 @@ const tokenChecker = async (token, res) => {
 
     const results = await Model.token.findAll({
       where: {
-        Token: token,
-        Remaining: {
-          [Op.gt]: 0
+        Token: token
         }
-      }
     });
 
-    (results.length > 0) ? result = Utility.tokenCheckerResults.TOKEN_VALID_REMAINING : result = Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING;
+    if (results.length > 0) { result = Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING };
+    if (results[0].remaining > 0) { result = Utility.tokenCheckerResults.TOKEN_VALID_REMAINING };
 
     return result;
 

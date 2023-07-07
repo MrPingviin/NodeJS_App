@@ -9,13 +9,18 @@ const createToken = (req, res) => {
 
   const getResult = async () => {
 
-    const result = await Model.token.findAll({
+    const match = await Model.token.findAll({
       attributes: ['Token', 'Remaining'],
       where: {
         Token: newtoken
       }
     })
 
+    const result = {
+      token: match[0].dataValues.Token,
+      remaining: match[0].dataValues.Remaining
+    }
+    
     return result;
   };
 

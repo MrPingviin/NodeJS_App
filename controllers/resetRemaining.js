@@ -5,20 +5,34 @@ import Model from "../models/model.js";
 const resetRemaining = async (token, res) => {
   try {
 
-    await Model.token.update({ remaining: Utility.config.defaultRemaining }, {
+    let result = {
+      message: "The token is valid but it still has remainings. No action taken."
+    }
+
+    const match = await Model.token.findAll({
+      attributes: ['remaining'],
       where: {
         Token: token
       }
     });
 
-    const result = await Model.token.findAll({
-      attributes: ['Remaining'],
-      where: {
-        Token: token
-      }
-    });
+    if (match[0].dataValues.remaining === 0) {
 
-    res.status(200).json(result);
+      await Model.token.update({ remaining: Utility.config.defaultRemaining }, {
+        where: {
+          Token: token
+        }
+      });
+
+      result = {
+        remaining: Utility.config.defaultRemaining
+      }
+      res.status(200).json(result);
+      return true;
+    }
+
+    res.status(401).json(result);
+    return false;
     
   } catch (error) {
     return res
