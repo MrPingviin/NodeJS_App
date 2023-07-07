@@ -2,7 +2,7 @@
 
 ### Technologies:
 - Backend Framework: Express ( https://expressjs.com/ )
-- ORM: Sequalize ( https://sequelize.org/ )
+- ORM: Sequelize ( https://sequelize.org/ )
 
 ## Description
 
