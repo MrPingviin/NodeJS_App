@@ -1,26 +1,27 @@
-const sequelize = require("../utility/sequelize");
-const Config = require("../utility/config");
+import sequelize from "../utility/sequelize.js";
+import Utility from "../utility/utility.js";
+import Model from "../models/model.js";
 
-exports.resetRemaining = async (token, res) => {
+const resetRemaining = async (token, res) => {
   try {
-    await sequelize.query(
-      `UPDATE Tokens SET Remaining = :defaultRemaining WHERE Token = :token`,
-      {
-        replacements: {
-          defaultRemaining: Config.defaultRemaining,
-          token: token,
-        },
-        type: sequelize.QueryTypes.UPDATE,
+
+    await Model.token.update({ remaining: Utility.config.defaultRemaining }, {
+      where: {
+        Token: token
       }
-    );
+    });
+
     return res
       .status(200)
       .send(
-        `Token remaining resetted to the default value(${Config.defaultRemaining})`
+        `Token remaining resetted to the default value(${Utility.config.defaultRemaining})`
       );
   } catch (error) {
     return res
       .status(503)
       .send("Failed to reset the token's remainings. Please try again.");
-  }
+  };
 };
+
+
+export default resetRemaining;

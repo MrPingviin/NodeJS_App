@@ -1,13 +1,12 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const cors = require('cors');
-const tokenchecker = require('./utility/tokenchecker');
-const create = require('./routes/create/create');
-const renew = require('./routes/renew/renew');
-const usetoken = require('./utility/usetoken');
-const list = require('./routes/list/list');
-const { Sequelize, DataTypes } = require('sequelize');
-const dotenv = require('dotenv');
+import cors from 'cors';
+import create from './routes/create/create.js';
+import renew from './routes/renew/renew.js';
+import root from './utility/path.js';
+import { Sequelize, DataTypes } from 'sequelize';
+import Controller from './controllers/controller.js';
+import dotenv from 'dotenv';
 dotenv.config();
 
 const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING);
@@ -16,7 +15,7 @@ app.use("/", cors());
 app.use("/", express.json());
 app.use("/create", create);
 app.use("/renew", renew);
-app.use("/list", list);
+//app.use("/list", list);
 
 app.listen(process.env.PORT, async (err) => {
     (err) && console.error(err);

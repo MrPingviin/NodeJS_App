@@ -1,7 +1,8 @@
-const Models = require("../models");
-const sequalize = require("./../utility/sequalize");
+import root from './../utility/path.js';
+import Model from '../models/model.js';
+import sequelize from './../utility/sequelize.js';
 
-exports.createArticle = async (req, res) => {
+const createArticle = async (req, res) => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -9,17 +10,13 @@ exports.createArticle = async (req, res) => {
   const formattedDate = `${year}-${month}-${day}`;
 
   const getResult = async () => {
-    const matches = await sequelize.query(
-      "SELECT * FROM Articles WHERE Title = :title AND Description = :description AND CreatedAt = :createdAt",
-      {
-        replacements: {
-          title: req.body.title,
-          description: req.body.description,
-          createdAt: formattedDate,
-        },
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
+    const matches = await Model.article.findAll({
+      where: {
+        Title: req.body.title,
+        Description: req.body.description,
+        CreatedAt: formattedDate,
+      },
+    });
 
     const sortedMatches = matches.sort((a, b) => a.ID > b.ID);
     const result = sortedMatches[sortedMatches.length - 1];
@@ -27,7 +24,7 @@ exports.createArticle = async (req, res) => {
     return result;
   };
 
-  Models.Article.create({
+  Model.article.create({
     title: req.body.title,
     description: req.body.description,
   })
@@ -44,3 +41,5 @@ exports.createArticle = async (req, res) => {
         .send("Failed to create the new article. Please try again.");
     });
 };
+
+export default createArticle;

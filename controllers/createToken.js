@@ -1,28 +1,27 @@
-const Models = require("../models");
-const crypto = require("crypto");
-const Config = require("./../utility/config");
-const sequalize = require("./../utility/sequalize");
+import Model from "../models/model.js";
+import crypto from "crypto";
+import Utility from "./../utility/utility.js";
+import sequelize from "./../utility/sequelize.js";
 
-exports.createToken = (req, res) => {
+const createToken = (req, res) => {
   const newtoken = crypto.randomUUID();
   const platform = req.body.platform.toLowerCase();
 
   const getResult = async () => {
-    const result = await sequelize.query(
-      "SELECT * FROM Tokens WHERE Token = :token",
-      {
-        replacements: { token: newtoken },
-        type: sequelize.QueryTypes.SELECT,
+
+    const result = await Model.token.findAll({
+      where: {
+        Token: newtoken
       }
-    );
+    })
 
     return result;
   };
 
-  Models.Token.create({
+  Model.token.create({
     token: newtoken,
     platform: platform,
-    remaining: Config.defaultRemaining,
+    remaining: Utility.config.defaultRemaining,
   })
     .then((response) => {
       const sendResult = async () => {
@@ -32,6 +31,8 @@ exports.createToken = (req, res) => {
       sendResult();
     })
     .catch((error) => {
-      res.status(503).json("Failed to create the new token. Please try again.");
+      /* res.status(503).json("Failed to create the new token. Please try again."); */
     });
 };
+
+export default createToken;

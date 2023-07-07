@@ -1,24 +1,24 @@
-const express = require("express");
+import express from "express";
+import sequalize from "./../../utility/sequalize.js";
+import Controller from "./../../controllers/controller.js";
+import Utility from "./../../utility/utility.js";
 const router = express.Router();
-const sequalize = require("./../../utility/sequalize");
-const Controllers = require("./../../controllers");
-const Utility = require("./../../utility");
 
 router.post("/", async (req, res) => {
   const token = req.header("Authorization");
-  const tokenCheck = await Controllers.tokenChecker(token);
+  const tokenCheck = await Controller.tokenChecker(token, res);
 
-  switch (Controllers.tokenCheck) {
-    case Utility.tokenCheck.TOKEN_NOT_VALID:
+  switch (Controller.tokenCheck) {
+    case Utility.tokenCheckerResults.TOKEN_NOT_VALID:
       res.status(404).send("There is no such token. Please use a valid token.");
       break;
-    case Utility.tokenCheck.TOKEN_VALID_NO_REMAINING:
+    case Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING:
       res.status(401).send("Token is valid but no remaining");
       break;
-    case Utility.tokenCheck.TOKEN_VALID_REMAINING:
+    case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
       Controllers.getList(req, res);
       break;
   }
 });
 
-module.exports = router;
+export default router;

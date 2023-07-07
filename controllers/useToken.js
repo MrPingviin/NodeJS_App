@@ -1,33 +1,36 @@
-const express = require("express");
-const root = require("./path");
-const sequalize = require("./../utility/sequalize");
+import express from "express";
+import root from "../utility/path.js";
+import sequelize from "../utility/sequelize.js";
+import Model from "./../models/model.js";
 
-exports.useToken = async (token) => {
+const useToken = async (token, res) => {
   try {
-    const currentRemaining = await sequelize.query(
-      `SELECT Remaining FROM Tokens WHERE Token = :token`,
-      {
-        replacements: { token: token },
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
 
-    await sequelize.query(
-      `UPDATE Tokens SET Remaining = :newRemaining WHERE Token = :token`,
-      {
-        replacements: {
-          newRemaining: currentRemaining[0].Remaining - 1,
-          token: token,
-        },
-        type: sequelize.QueryTypes.UPDATE,
+    const currentRemaining = await Model.token.findAll({
+      attributes: ["Remaining"],
+      where: {
+        Token: token
       }
-    );
+    });
+
+    if (currentRemaining[0].dataValues.Remaining > 0) {
+      await Model.token.update({ remaining: currentRemaining[0].dataValues.Remaining - 1 }, {
+        where: {
+          Token: token
+        }
+      });
+    }
+
+    return true;
+
   } catch (error) {
-    res
+    /* res
       .status(503)
       .send(
         "Error in the process of calculating remainigs in the token. Please try again."
-      );
+      ); */
     return false;
   }
 };
+
+export default useToken;

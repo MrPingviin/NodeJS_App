@@ -1,13 +1,12 @@
-const sequalize = require("./../utility/sequalize");
+import sequelize from "./../utility/sequelize.js";
+import Model from "./../models/model.js";
 
-exports.getList = async (req, res) => {
+const getList = async (req, res) => {
   const pageSize = req.body.pageSize;
   const page = req.body.page;
 
   try {
-    const articles = await sequalize.query("SELECT * FROM Articles", {
-      replacements: {},
-    });
+    const articles = await Model.article.findAll();
 
     const pagin = array.slice((page - 1) * pageSize, page * pageSize);
 
@@ -26,3 +25,5 @@ exports.getList = async (req, res) => {
     res.status(503).send("Failed to retrieve the articles. Please try again.");
   }
 };
+
+export default getList;

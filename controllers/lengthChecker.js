@@ -1,12 +1,14 @@
-const Config = require("./../utility/config");
+import Utility from "./../utility/utility.js";
 
-exports.lengthChecker = (
+const lengthChecker = (
   req
 ) => {
   return (
-    req.body.title.length >= Config.minTitleLength &&
-    req.body.title.length <= Config.maxTitleLength &&
-    req.body.description.length >= Config.minDescriptionLength &&
-    req.body.description.length <= Config.maxDescriptionLength
+    req.body.title.length >= Utility.config.minTitleLength &&
+    req.body.title.length <= Utility.config.maxTitleLength &&
+    req.body.description.length >= Utility.config.minDescriptionLength &&
+    req.body.description.length <= Utility.config.maxDescriptionLength
   );
 };
+
+export default lengthChecker;

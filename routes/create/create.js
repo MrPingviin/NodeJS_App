@@ -1,30 +1,29 @@
-const express = require("express");
-const root = require("./../../utility/path");
-const Controllers = require("./../../controllers");
-const Config = require("./../../config");
-const Utility = require("./../../utility");
+import express from "express";
+import root from "./../../utility/path.js";
+import Controller from "./../../controllers/controller.js";
+import Utility from "./../../utility/utility.js";
 const router = express.Router();
 
 router.post("/article", async (req, res) => {
   const token = req.header("Authorization");
-  const tokenCheck = await Controllers.tokenchecker(token);
+  const tokenCheck = await Controller.tokenChecker(token, res);
 
   switch (tokenCheck) {
-    case Utility.tokenCheck.TOKEN_NOT_VALID:
-      res.status(404).send("There is no such token. Please use a valid token.");
+    case Utility.tokenCheckerResults.TOKEN_NOT_VALID:
+      return res.status(404).send("There is no such token. Please use a valid token.");
       break;
-    case Utility.tokenCheck.TOKEN_VALID_NO_REMAINING:
-      res.status(401).send("Token is valid but no remaining");
+    case Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING:
+      return res.status(401).send("Token is valid but no remaining");
       break;
-    case Utility.tokenCheck.TOKEN_VALID_REMAINING:
-      if (Controllers.lengthChecker(req)) {
-        Controllers.createArticle(req, res);
-        Controllers.useToken(token);
+    case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
+      if (Controller.lengthChecker(req)) {
+        Controller.createArticle(req, res);
+        Controller.useToken(token, res);
       } else {
-        res
+        return res
           .status(400)
           .send(
-            `Title (min ${Config.minTitleLength}, max ${Config.maxTitleLength} chars) or description (min ${Config.minDescriptionLength}, max ${Config.maxDescriptionLength} chars) doesn't have a proper length.`
+            `Title (min ${Utility.config.minTitleLength}, max ${Utility.config.maxTitleLength} chars) or description (min ${Utility.config.minDescriptionLength}, max ${Utility.config.maxDescriptionLength} chars) doesn't have a proper length.`
           );
       }
       break;
@@ -32,15 +31,15 @@ router.post("/article", async (req, res) => {
 });
 
 router.post("/token", (req, res) => {
-  if (Controllers.platformValidator(req, Config.validPlatforms)) {
-    Controllers.createToken(req, res);
+  if (Controller.platformValidator(req, Utility.config.validPlatforms)) {
+    Controller.createToken(req, res);
   } else {
     res
       .status(400)
       .send(
-        `Platform is either not provided or not valid. Please provide a valid platform. ${Config.validPlatforms} `
-      );
+        `Platform is either not provided or not valid. Please provide a valid platform. ${Utility.config.validPlatforms} `
+      ); 
   }
 });
 
-module.exports = router;
+export default router;

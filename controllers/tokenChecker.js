@@ -1,33 +1,33 @@
-const root = require("./path");
-const sequalize = require("./../utility/sequalize");
-const Utility = require("./../utility");
+import root from "../utility/path.js";
+import sequelize from "./../utility/sequelize.js";
+import Utility from "./../utility/utility.js";
+import Model from "./../models/model.js";
+import { Op } from "sequelize";
 
-exports.tokenChecker = async (token) => {
+const tokenChecker = async (token, res) => {
   let result = Utility.tokenCheckerResults.TOKEN_NOT_VALID;
 
   try {
-    const tokens = await sequelize.query(
-      "SELECT Token FROM Tokens WHERE Tokens = :token",
-      {
-        type: sequelize.QueryTypes.SELECT,
-      }
-    );
 
-    tokens.find((item) => {
-      if (item.Token === token) {
-        item.Remaining > 0
-          ? (result = Utility.tokenCheckerResults.TOKEN_VALID_REMAINING)
-          : (result = Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING);
-        return true;
+    const results = await Model.token.findAll({
+      where: {
+        Token: token,
+        Remaining: {
+          [Op.gt]: 0
+        }
       }
     });
 
+    (results.length > 0) ? result = Utility.tokenCheckerResults.TOKEN_VALID_REMAINING : result = Utility.tokenCheckerResults.TOKEN_VALID_NO_REMAINING;
+
     return result;
+
   } catch (error) {
-    res
+/*     res
       .status(503)
-      .send("Error in the process of checking the token. Please try again.");
+      .send("Error in the process of checking the token. Please try again."); */
     return result;
   }
-  return result;
 };
+
+export default tokenChecker;

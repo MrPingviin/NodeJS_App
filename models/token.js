@@ -1,4 +1,7 @@
-exports.Token = sequelize.define("Token", {
+import { Sequelize, DataTypes } from 'sequelize';
+import sequelize from "../utility/sequelize.js";
+
+const Token = sequelize.define("Token", {
   token: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -12,3 +15,5 @@ exports.Token = sequelize.define("Token", {
     allowNull: false,
   },
 });
+
+export default Token;

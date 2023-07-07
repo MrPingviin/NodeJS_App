@@ -1,4 +1,7 @@
-exports.Article = sequelize.define("Article", {
+import { Sequelize, DataTypes } from 'sequelize';
+import sequelize from "../utility/sequelize.js";
+
+const Article = sequelize.define("Article", {
   title: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -8,3 +11,5 @@ exports.Article = sequelize.define("Article", {
     allowNull: false,
   },
 });
+
+export default Article;

@@ -1,4 +1,4 @@
-exports.platformValidator = (req, validPlatforms) => {
+const platformValidator = (req, validPlatforms) => {
   const platform = req.body.platform;
   if (platform === undefined) {
     return false;
@@ -7,3 +7,5 @@ exports.platformValidator = (req, validPlatforms) => {
   const platformLowercase = platform.toLowerCase();
   return validPlatforms.includes(platformLowercase);
 };
+
+export default platformValidator;
