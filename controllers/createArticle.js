@@ -15,13 +15,20 @@ const createArticle = async (req, res) => {
         Title: req.body.title,
         Description: req.body.description,
         CreatedAt: formattedDate,
-      },
+      }
     });
 
     const sortedMatches = matches.sort((a, b) => a.ID > b.ID);
-    const result = sortedMatches[sortedMatches.length - 1];
+    const sortResult = sortedMatches[sortedMatches.length - 1];
 
-    return result;
+    const result = {
+      title: sortResult.dataValues.title,
+      description: sortResult.dataValues.description,
+      id: sortResult.dataValues.id
+    }
+
+    res.status(200).json(result);
+    
   };
 
   Model.article.create({

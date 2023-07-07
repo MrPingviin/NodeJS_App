@@ -13,7 +13,6 @@ const Config = {
   db_connection_password: process.env.DB_CONNECTION_PASSWORD,
   db_connection_ip: process.env.DB_CONNECTION_IP,
   db_connection_port: process.env.DB_CONNECTION_PORT
-
 };
 
 export default Config;

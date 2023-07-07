@@ -1,5 +1,5 @@
 import express from "express";
-import sequalize from "./../../utility/sequalize.js";
+import sequalize from "./../../utility/sequelize.js";
 import Controller from "./../../controllers/controller.js";
 import Utility from "./../../utility/utility.js";
 const router = express.Router();
@@ -8,7 +8,7 @@ router.post("/", async (req, res) => {
   const token = req.header("Authorization");
   const tokenCheck = await Controller.tokenChecker(token, res);
 
-  switch (Controller.tokenCheck) {
+  switch (tokenCheck) {
     case Utility.tokenCheckerResults.TOKEN_NOT_VALID:
       res.status(404).send("There is no such token. Please use a valid token.");
       break;
@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
       res.status(401).send("Token is valid but no remaining");
       break;
     case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
-      Controllers.getList(req, res);
+      Controller.getList(req, res);
       break;
   }
 });

@@ -10,6 +10,7 @@ const createToken = (req, res) => {
   const getResult = async () => {
 
     const result = await Model.token.findAll({
+      attributes: ['Token', 'Remaining'],
       where: {
         Token: newtoken
       }

@@ -1,6 +1,6 @@
 import express from "express";
-import Controllers from "./../../controllers/controller.js";
-import Utility from "./../utility/utility.js";
+import Controller from "./../../controllers/controller.js";
+import Utility from "./../../utility/utility.js";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
       res.status(401).send("Token is valid but no remaining");
       break;
     case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
-      Controllers.getArticle(req, res);
+      Controller.getArticle(req, res);
       break;
   }
 });

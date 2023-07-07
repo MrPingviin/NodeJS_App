@@ -3,6 +3,8 @@ const app = express();
 import cors from 'cors';
 import create from './routes/create/create.js';
 import renew from './routes/renew/renew.js';
+import detailed from './routes/detailed/detailed.js';
+import list from './routes/list/list.js';
 import root from './utility/path.js';
 import { Sequelize, DataTypes } from 'sequelize';
 import Controller from './controllers/controller.js';
@@ -15,7 +17,8 @@ app.use("/", cors());
 app.use("/", express.json());
 app.use("/create", create);
 app.use("/renew", renew);
-//app.use("/list", list);
+app.use("/detailed", detailed);
+app.use("/list", list);
 
 app.listen(process.env.PORT, async (err) => {
     (err) && console.error(err);

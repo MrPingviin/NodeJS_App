@@ -11,11 +11,15 @@ const resetRemaining = async (token, res) => {
       }
     });
 
-    return res
-      .status(200)
-      .send(
-        `Token remaining resetted to the default value(${Utility.config.defaultRemaining})`
-      );
+    const result = await Model.token.findAll({
+      attributes: ['Remaining'],
+      where: {
+        Token: token
+      }
+    });
+
+    res.status(200).json(result);
+    
   } catch (error) {
     return res
       .status(503)
