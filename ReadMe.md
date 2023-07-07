@@ -1,5 +1,9 @@
 # NodeJS App - Solution
 
+### Technologies:
+- Backend Framework: Express ( https://expressjs.com/ )
+- ORM: Sequalize ( https://sequelize.org/ )
+
 ## Description
 
 The task is to build a server with the following main functionalities:
