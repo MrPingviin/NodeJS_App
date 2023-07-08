@@ -3,6 +3,7 @@
 ### Technologies:
 - Backend Framework: Express ( https://expressjs.com/ )
 - ORM: Sequelize ( https://sequelize.org/ )
+- DB: MariaDB ( https://mariadb.org/ )
 
 ## Description
 
