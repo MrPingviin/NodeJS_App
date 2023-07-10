@@ -17,8 +17,7 @@ router.post("/article", async (req, res) => {
       break;
     case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
       if (Controller.lengthChecker(req)) {
-        Controller.createArticle(req, res);
-        Controller.useToken(token, res);
+        Controller.createArticle(req, res, token);
       } else {
         return res
           .status(400)
@@ -38,7 +37,7 @@ router.post("/token", (req, res) => {
       .status(400)
       .send(
         `Platform is either not provided or not valid. Please provide a valid platform. ${Utility.config.validPlatforms} `
-      ); 
+      );
   }
 });
 

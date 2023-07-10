@@ -1,8 +1,9 @@
 import root from './../utility/path.js';
 import Model from '../models/model.js';
 import sequelize from './../utility/sequelize.js';
+import Controller from './controller.js';
 
-const createArticle = async (req, res) => {
+const createArticle = async (req, res, token) => {
   const currentDate = new Date();
   const year = currentDate.getFullYear();
   const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -26,9 +27,8 @@ const createArticle = async (req, res) => {
       description: sortResult.dataValues.description,
       id: sortResult.dataValues.id
     }
-
+    Controller.useToken(token, res);
     res.status(200).json(result);
-    
   };
 
   Model.article.create({
@@ -40,6 +40,7 @@ const createArticle = async (req, res) => {
         const result = await getResult();
         res.status(200).json(result);
       };
+      Controller.useToken(token, res);
       sendResult();
     })
     .catch((error) => {

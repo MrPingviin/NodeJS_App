@@ -2,6 +2,7 @@ import Model from "../models/model.js";
 import crypto from "crypto";
 import Utility from "./../utility/utility.js";
 import sequelize from "./../utility/sequelize.js";
+import Controller from "./controller.js";
 
 const createToken = (req, res) => {
   const newtoken = crypto.randomUUID();
@@ -20,7 +21,7 @@ const createToken = (req, res) => {
       token: match[0].dataValues.Token,
       remaining: match[0].dataValues.Remaining
     }
-    
+
     return result;
   };
 

@@ -6,12 +6,10 @@ import renew from './routes/renew/renew.js';
 import detailed from './routes/detailed/detailed.js';
 import list from './routes/list/list.js';
 import root from './utility/path.js';
-import { Sequelize, DataTypes } from 'sequelize';
 import Controller from './controllers/controller.js';
+import sequelize from './utility/sequelize.js';
 import dotenv from 'dotenv';
 dotenv.config();
-
-const sequelize = new Sequelize(process.env.DB_CONNECTION_STRING);
 
 app.use("/", cors());
 app.use("/", express.json());

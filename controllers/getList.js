@@ -1,7 +1,8 @@
 import sequelize from "./../utility/sequelize.js";
 import Model from "./../models/model.js";
+import Controller from "./controller.js";
 
-const getList = async (req, res) => {
+const getList = async (req, res, token) => {
   const pageSize = req.body.pageSize;
   const page = req.body.page;
   const matches = [];
@@ -34,7 +35,8 @@ const getList = async (req, res) => {
       },
     };
 
-    res.status(200).json(result); 
+    Controller.useToken(token, res);
+    res.status(200).json(result);
   } catch (error) {
     res.status(503).send("Failed to retrieve the articles. Please try again.");
   }

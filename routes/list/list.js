@@ -16,7 +16,7 @@ router.post("/", async (req, res) => {
       res.status(401).send("Token is valid but no remaining");
       break;
     case Utility.tokenCheckerResults.TOKEN_VALID_REMAINING:
-      Controller.getList(req, res);
+      Controller.getList(req, res, token);
       break;
   }
 });
